@@ -105,15 +105,74 @@ async def get_city_indicators(city_id: str):
 
 @api_router.post("/ai/insights")
 async def get_ai_insights(request: AIInsightsRequest):
-    """Generate AI-powered planning insights"""
+    """Generate AI-powered planning insights with explainability"""
     try:
+        # Generate AI insights
         insights = await generate_planning_insights(
             indicators=request.indicators,
             model=request.model
         )
-        return insights
+        
+        # Generate specific recommendations
+        recommendations = generate_specific_recommendations(
+            indicators=request.indicators
+        )
+        
+        # Combine insights and recommendations
+        return {
+            'issues': insights.get('issues', []),
+            'ai_recommendations': insights.get('recommendations', []),
+            'planning_recommendations': recommendations,
+            'model_used': insights.get('model_used', request.model),
+            'explainability': {
+                'indicators_analyzed': list(request.indicators.keys()),
+                'analysis_timestamp': datetime.now(timezone.utc).isoformat(),
+                'confidence_notes': 'Confidence levels based on data completeness and indicator quality',
+                'assumptions': [
+                    'Service radius: 5km for hospitals, 3km for schools',
+                    'Population projections based on current density patterns',
+                    'Cost estimates in USD (2025 baseline)',
+                    'Implementation timelines assume normal regulatory processes'
+                ]
+            }
+        }
     except Exception as e:
         logging.error(f"Error generating AI insights: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/city/{city_id}/report")
+async def generate_report(city_id: str):
+    """Generate and download PDF planning report"""
+    if city_id != "nairobi":
+        raise HTTPException(status_code=404, detail="City not found")
+    
+    try:
+        # Get data and indicators
+        data = generate_nairobi_sample_data()
+        indicators = calculate_all_indicators(data)
+        
+        # Generate AI insights and recommendations
+        ai_insights = await generate_planning_insights(indicators, model="gpt-5.2")
+        recommendations = generate_specific_recommendations(indicators)
+        
+        # Generate PDF
+        pdf_buffer = generate_city_report(
+            city_name="Nairobi",
+            indicators=indicators,
+            insights=ai_insights,
+            recommendations=recommendations
+        )
+        
+        # Return as downloadable file
+        return StreamingResponse(
+            pdf_buffer,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f"attachment; filename=UrbanPulse_Nairobi_Report_{datetime.now().strftime('%Y%m%d')}.pdf"
+            }
+        )
+    except Exception as e:
+        logging.error(f"Error generating report: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Include router
