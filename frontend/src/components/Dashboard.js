@@ -124,15 +124,26 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <button
-            onClick={generateAIInsights}
-            disabled={generatingInsights}
-            className="flex items-center gap-2 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-rajdhani font-bold uppercase tracking-wider rounded-sm shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100"
-            data-testid="generate-insights-btn"
-          >
-            <Sparkles className="w-4 h-4" />
-            {generatingInsights ? 'Analyzing...' : 'AI Insights'}
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={downloadReport}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 font-rajdhani font-semibold uppercase tracking-wider rounded-sm hover:scale-105 transition-all"
+              data-testid="download-report-btn"
+            >
+              <Download className="w-4 h-4" />
+              PDF Report
+            </button>
+            
+            <button
+              onClick={generateAIInsights}
+              disabled={generatingInsights}
+              className="flex items-center gap-2 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-rajdhani font-bold uppercase tracking-wider rounded-sm shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100"
+              data-testid="generate-insights-btn"
+            >
+              <Sparkles className="w-4 h-4" />
+              {generatingInsights ? 'Analyzing...' : 'AI Insights'}
+            </button>
+          </div>
         </div>
       </header>
 
