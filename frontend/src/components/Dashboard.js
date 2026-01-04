@@ -72,6 +72,13 @@ const Dashboard = () => {
     }
   };
 
+  const toggleLayer = (layer) => {
+    setActiveLayers(prev => ({
+      ...prev,
+      [layer]: !prev[layer]
+    }));
+  };
+
   const downloadReport = async () => {
     try {
       toast.info('Generating PDF report...');
