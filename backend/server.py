@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -17,6 +18,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 from spatial_analysis.nairobi_data import generate_nairobi_sample_data, convert_to_geojson
 from indicators.urban_metrics import calculate_all_indicators
 from ai_planner.insights import generate_planning_insights
+from ai_planner.recommendations import generate_specific_recommendations
+from reports.pdf_generator import generate_city_report
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
