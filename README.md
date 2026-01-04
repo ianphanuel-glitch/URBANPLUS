@@ -1,8 +1,29 @@
 # UrbanPulse AI
 
-## 🏙️ Urban & Regional Planning Intelligence Platform
+### 🏙️ Urban & Regional Planning Intelligence Platform
 
-**UrbanPulse AI** is a production-ready, AI-powered platform for urban planners, policymakers, and smart-city researchers. Built specifically for rapidly urbanizing African cities, starting with Nairobi, Kenya.
+**From urban analysis to investment decisions.**
+
+UrbanPulse AI is a **decision-support system for urban and regional planning** that combines **geospatial analysis, AI reasoning, and policy-aware analytics** to help cities **plan smarter, invest better, and justify infrastructure decisions with confidence**.
+
+The platform is designed for **rapidly urbanizing cities**, with a strong focus on **African urban contexts**, where data gaps, infrastructure pressure, and equity challenges demand transparent and explainable planning tools.
+
+---
+
+## Why UrbanPulse AI?
+
+Urban planning decisions involve complex **trade-offs between cost, impact, equity, and time**.  
+Most tools stop at visualization or static analysis.
+
+UrbanPulse AI goes further by enabling planners to:
+
+- Compare multiple infrastructure investment scenarios
+- Understand trade-offs between planning options
+- Quantify cost, beneficiaries, and accessibility gains
+- Generate **policy-ready PDF reports**
+- Maintain accountability through **explainable AI**
+
+---
 
 ![Urban Planning Dashboard](https://images.unsplash.com/photo-1693902997450-7e912c0d3554?w=1200&h=400&fit=crop)
 
