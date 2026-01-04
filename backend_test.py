@@ -160,7 +160,11 @@ def main():
     if tester.failed_tests:
         print(f"\n❌ Failed Tests:")
         for failure in tester.failed_tests:
-            print(f"   - {failure['test']}: {failure.get('error', f\"Status {failure.get('actual')} (expected {failure.get('expected')})\"}")
+            if 'error' in failure:
+                error_msg = failure['error']
+            else:
+                error_msg = f"Status {failure.get('actual')} (expected {failure.get('expected')})"
+            print(f"   - {failure['test']}: {error_msg}")
     
     return 0 if tester.tests_passed == tester.tests_run else 1
 
