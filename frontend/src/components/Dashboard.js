@@ -72,11 +72,28 @@ const Dashboard = () => {
     }
   };
 
-  const toggleLayer = (layer) => {
-    setActiveLayers(prev => ({
-      ...prev,
-      [layer]: !prev[layer]
-    }));
+  const downloadReport = async () => {
+    try {
+      toast.info('Generating PDF report...');
+      
+      const response = await axios.get(`${API}/city/${selectedCity}/report`, {
+        responseType: 'blob'
+      });
+      
+      // Create blob link to download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `UrbanPulse_${selectedCity}_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      toast.success('Report downloaded successfully');
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      toast.error('Failed to download report');
+    }
   };
 
   if (loading) {
