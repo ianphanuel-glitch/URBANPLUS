@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MapPin, Activity, Building2, Route, Trees, Sparkles, AlertTriangle, TrendingUp, X } from 'lucide-react';
+import { MapPin, Activity, Building2, Route, Trees, Sparkles, AlertTriangle, TrendingUp, X, Download } from 'lucide-react';
 import UrbanMap from './UrbanMap';
 import MetricCard from './MetricCard';
 import LayerToggle from './LayerToggle';
