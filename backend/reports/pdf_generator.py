@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')  # Non-GUI backend
 from datetime import datetime
-from typing import Dict
+from typing import Dict, List
 
 def generate_city_report(city_name: str, indicators: Dict, insights: Dict, recommendations: List[Dict]) -> BytesIO:
     """
