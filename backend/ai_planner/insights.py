@@ -25,7 +25,7 @@ Current Urban Indicators:
 1. Population Density:
    - Total Population: {indicators['population_density']['total_population']:,}
    - Average Density: {indicators['population_density']['avg_density']:.2f} people/km²
-   - Most Dense Zone: {indicators['population_density']['zones'][0]['name'] if indicators['population_density']['zones'] else 'N/A'} ({indicators['population_density']['zones'][0]['density']:,} people/km²)
+   - Most Dense Zone: {indicators['population_density']['zones'][0]['name'] + f" ({indicators['population_density']['zones'][0]['density']:,} people/km²)" if indicators['population_density']['zones'] else 'N/A'}
 
 2. Land Use:
    - Built-up Area: {indicators['land_use']['built_up_percentage']:.2f}%
