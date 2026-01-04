@@ -17,34 +17,50 @@ async def generate_planning_insights(indicators: Dict, model: str = "gpt-5.2") -
         }
     
     # Prepare context for AI
-    context = f"""
+    try:
+        # Safely extract values with defaults
+        pop_density = indicators.get('population_density', {})
+        land_use = indicators.get('land_use', {})
+        road_network = indicators.get('road_network', {})
+        service_access = indicators.get('service_accessibility', {})
+        green_space = indicators.get('green_space', {})
+        
+        # Get most dense zone safely
+        zones = pop_density.get('zones', [])
+        most_dense_zone = f"{zones[0]['name']} ({zones[0]['density']:,} people/km²)" if zones else 'N/A'
+        
+        # Get coverage data safely
+        coverage = service_access.get('coverage', {})
+        hospitals_per_100k = coverage.get('hospitals_per_100k', 0)
+        
+        context = f"""
 You are an expert urban planner analyzing data for Nairobi, Kenya.
 
 Current Urban Indicators:
 
 1. Population Density:
-   - Total Population: {indicators['population_density']['total_population']:,}
-   - Average Density: {indicators['population_density']['avg_density']:.2f} people/km²
-   - Most Dense Zone: {indicators['population_density']['zones'][0]['name'] + f" ({indicators['population_density']['zones'][0]['density']:,} people/km²)" if indicators['population_density']['zones'] else 'N/A'}
+   - Total Population: {pop_density.get('total_population', 0):,}
+   - Average Density: {pop_density.get('avg_density', 0):.2f} people/km²
+   - Most Dense Zone: {most_dense_zone}
 
 2. Land Use:
-   - Built-up Area: {indicators['land_use']['built_up_percentage']:.2f}%
-   - Residential: {indicators['land_use']['residential_area_km2']:.2f} km²
-   - Commercial: {indicators['land_use']['commercial_area_km2']:.2f} km²
+   - Built-up Area: {land_use.get('built_up_percentage', 0):.2f}%
+   - Residential: {land_use.get('residential_area_km2', 0):.2f} km²
+   - Commercial: {land_use.get('commercial_area_km2', 0):.2f} km²
 
 3. Road Network:
-   - Road Density: {indicators['road_network']['road_density_km_per_km2']:.3f} km/km²
-   - Total Roads: {indicators['road_network']['total_length_km']:.2f} km
+   - Road Density: {road_network.get('road_density_km_per_km2', 0):.3f} km/km²
+   - Total Roads: {road_network.get('total_length_km', 0):.2f} km
 
 4. Service Accessibility:
-   - Accessibility Score: {indicators['service_accessibility']['accessibility_score']:.2f}/100
-   - Hospitals: {indicators['service_accessibility']['total_hospitals']}
-   - Schools: {indicators['service_accessibility']['total_schools']}
-   - Hospitals per 100k: {indicators['service_accessibility']['coverage']['hospitals_per_100k']:.2f}
+   - Accessibility Score: {service_access.get('accessibility_score', 0):.2f}/100
+   - Hospitals: {service_access.get('total_hospitals', 0)}
+   - Schools: {service_access.get('total_schools', 0)}
+   - Hospitals per 100k: {hospitals_per_100k:.2f}
 
 5. Green Space:
-   - Green Space Coverage: {indicators['green_space']['green_space_percentage']:.2f}%
-   - Per Capita: {indicators['green_space']['per_capita_m2']:.2f} m²/person
+   - Green Space Coverage: {green_space.get('green_space_percentage', 0):.2f}%
+   - Per Capita: {green_space.get('per_capita_m2', 0):.2f} m²/person
 
 Based on this data, provide:
 1. 3-5 critical planning issues or concerns
@@ -71,6 +87,12 @@ Respond ONLY with valid JSON in this exact format:
   ]
 }}
 """
+    except Exception as e:
+        return {
+            'error': f'Error preparing context: {str(e)}',
+            'issues': [],
+            'recommendations': []
+        }
     
     try:
         # Initialize chat
